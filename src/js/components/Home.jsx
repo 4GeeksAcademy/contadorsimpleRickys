@@ -2,18 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import Counter from './Counter';
 
 const Home = () => {
-  const initialCount = 0; // puedes cambiar este valor como base para la cuenta regresiva
+  const initialCount = 0;
   const [count, setCount] = useState(initialCount);
   const [isRunning, setIsRunning] = useState(true);
-  const [isCountdown, setIsCountdown] = useState(true); // true para cuenta regresiva, false para ascendente
   const intervalRef = useRef(null);
 
   const startCounter = () => {
-    if (intervalRef.current) return; // ya está corriendo
+    if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
-      setCount(prev =>
-        isCountdown ? Math.max(0, prev - 1) : prev + 1
-      );
+      setCount(prev => prev + 1);
     }, 1000);
     setIsRunning(true);
   };
@@ -29,15 +26,10 @@ const Home = () => {
     setCount(initialCount);
   };
 
-  const toggleCounterMode = () => {
-    resetCounter();
-    setIsCountdown(prev => !prev);
-  };
-
   useEffect(() => {
     startCounter();
     return () => stopCounter(); // limpieza
-  }, [isCountdown]);
+  }, []);
 
   return (
     <div style={styles.page}>
@@ -49,9 +41,6 @@ const Home = () => {
           {isRunning ? 'Parar' : 'Reanudar'}
         </button>
         <button onClick={resetCounter}>Reiniciar</button>
-        <button onClick={toggleCounterMode}>
-          Cambiar a {isCountdown ? 'ascendente' : 'regresiva'}
-        </button>
       </div>
     </div>
   );
